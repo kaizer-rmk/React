@@ -4,15 +4,21 @@ import {Control,LocalForm, Errors} from 'react-redux-form';
 import {Link} from 'react-router-dom';
 import {Loading} from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import {FadeTransform, Fade, Stagger} from 'react-animation-components';
 
 function RenderDish({dish}) {
     if(dish != null) {
         return (
-        <Card className="mb-4">
-            <CardImg width="100%" src={baseUrl+dish.image} alt={dish.name}></CardImg>
-            <CardTitle><h4>{dish.name}</h4></CardTitle>
-            <CardText>{dish.description}</CardText>
-        </Card>
+            <FadeTransform in 
+                transformProps={{
+                    exitTransform:'scale(0.5) translateY(-50%)'
+                }}>
+                <Card className="mb-4">
+                    <CardImg width="100%" src={baseUrl+dish.image} alt={dish.name}></CardImg>
+                    <CardTitle><h4>{dish.name}</h4></CardTitle>
+                    <CardText>{dish.description}</CardText>
+                </Card>
+        </FadeTransform>
         );
     }
     else {
@@ -43,9 +49,13 @@ function RenderComments({comments,addComment,dishId}){
         });
         return (
             <div className='p-3'>
-                <h4>Comments</h4>
-                {cmnts}
-                <CommentForm dishId={dishId} addComment={addComment}/>
+                <Stagger in>
+                    <h4>Comments</h4>
+                    {cmnts}
+                    <Fade in>
+                        <CommentForm dishId={dishId} addComment={addComment}/>
+                    </Fade>
+                </Stagger>
             </div>
                 
         );
